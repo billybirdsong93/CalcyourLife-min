@@ -1,8 +1,8 @@
-export default function Home() {
-  return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Hello, CalcyourLife!</h1>
-      <p>Your life decision calculator will appear here.</p>
-    </div>
-  )
+import dynamic from "next/dynamic";
+
+// dynamic import ensures client-side rendering
+const Calculator = dynamic(() => import("./Calculator"), { ssr: false });
+
+export default function Page() {
+  return <Calculator />;
 }
