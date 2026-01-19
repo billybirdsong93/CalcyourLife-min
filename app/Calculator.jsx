@@ -20,11 +20,16 @@ export default function Calculator() {
     return { monthlySavings: monthly, yearlySavings: monthly * 12 };
   }, [expenseChange]);
 
-  // Slider gradient style helper
+  // Slider gradient from red → yellow → green
   const getGradient = (value) => {
-    const percentage = (value - 1) / 9 * 100; // 1-10 scale
+    // value is 1-10
+    let color;
+    if (value <= 3) color = "#f87171"; // red
+    else if (value <= 7) color = "#facc15"; // yellow
+    else color = "#4ade80"; // green
+    const percentage = ((value - 1) / 9) * 100;
     return {
-      background: `linear-gradient(90deg, #f87171 ${percentage}%, #374151 ${percentage}%)`,
+      background: `linear-gradient(90deg, ${color} ${percentage}%, #374151 ${percentage}%)`,
     };
   };
 
