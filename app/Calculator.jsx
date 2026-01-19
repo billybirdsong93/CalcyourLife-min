@@ -1,24 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function Calculator() {
+  // Slider states
   const [financial, setFinancial] = useState(5);
   const [time, setTime] = useState(5);
   const [lifestyle, setLifestyle] = useState(5);
 
+  // Income and expense states
   const [income, setIncome] = useState(5000);
   const [expenses, setExpenses] = useState(3500);
   const [expenseChange, setExpenseChange] = useState(0);
 
-  // Calculate overall decision score
+  // Overall decision score
   const score = Math.round((financial + time + lifestyle) / 3);
 
-  // Savings calculation
-  const currentSurplus = income - expenses;
-  const newSurplus = income - (expenses - expenseChange);
-  const monthlySavings = newSurplus - currentSurplus;
-  const yearlySavings = monthlySavings * 12;
+  // Calculate savings dynamically whenever any input changes
+  const { monthlySavings, yearlySavings } = useMemo(() => {
+    const currentSurplus = income - expenses;
+    const newSurplus = income - (expenses - expenseChange);
+    const monthly = newSurplus - currentSurplus;
+    return { monthlySavings: monthly, yearlySavings: monthly * 12 };
+  }, [income, expenses, expenseChange]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a", color: "#e5e7eb", padding: "40px", fontFamily: "Arial, sans-serif" }}>
@@ -57,7 +61,7 @@ export default function Calculator() {
         <p style={{ color: "#94a3b8" }}>How this choice affects your daily stress, energy levels, family time, hobbies, health and overall enjoyment of life.</p>
         <input type="range" min="1" max="10" value={lifestyle} onChange={(e) => setLifestyle(Number(e.target.value))} style={{ width: "100%", marginBottom: "20px" }} />
 
-        {/* Score */}
+        {/* Overall Score */}
         <div style={{ marginTop: "20px", padding: "12px", borderRadius: "8px", background: "#020617", border: "1px solid #1e293b", textAlign: "center" }}>
           <h2>Overall Decision Score</h2>
           <p style={{ fontSize: "32px", fontWeight: "700" }}>{score} / 10</p>
