@@ -8,21 +8,17 @@ export default function Calculator() {
   const [time, setTime] = useState(5);
   const [lifestyle, setLifestyle] = useState(5);
 
-  // Income and expense states
-  const [income, setIncome] = useState(5000);
-  const [expenses, setExpenses] = useState(3500);
+  // Only keep expected change in expenses
   const [expenseChange, setExpenseChange] = useState(0);
 
   // Overall decision score
   const score = Math.round((financial + time + lifestyle) / 3);
 
-  // Calculate savings dynamically whenever any input changes
+  // Savings calculation based only on expenseChange
   const { monthlySavings, yearlySavings } = useMemo(() => {
-    const currentSurplus = income - expenses;
-    const newSurplus = income - (expenses - expenseChange);
-    const monthly = newSurplus - currentSurplus;
+    const monthly = expenseChange;
     return { monthlySavings: monthly, yearlySavings: monthly * 12 };
-  }, [income, expenses, expenseChange]);
+  }, [expenseChange]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a", color: "#e5e7eb", padding: "40px", fontFamily: "Arial, sans-serif" }}>
@@ -35,13 +31,7 @@ export default function Calculator() {
         <p style={{ color: "#94a3b8" }}>Consider income reliability, savings, debt and how well you could handle unexpected expenses without stress.</p>
         <input type="range" min="1" max="10" value={financial} onChange={(e) => setFinancial(Number(e.target.value))} style={{ width: "100%", marginBottom: "20px" }} />
 
-        {/* Income/Expenses Inputs */}
-        <label>Current Monthly Income:</label>
-        <input type="number" value={income} onChange={(e) => setIncome(Number(e.target.value))} style={{ width: "100%", marginBottom: "10px", padding: "6px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#e5e7eb" }} />
-
-        <label>Current Monthly Expenses:</label>
-        <input type="number" value={expenses} onChange={(e) => setExpenses(Number(e.target.value))} style={{ width: "100%", marginBottom: "10px", padding: "6px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#e5e7eb" }} />
-
+        {/* Expected Change in Expenses */}
         <label>Expected Change in Expenses:</label>
         <input type="number" value={expenseChange} onChange={(e) => setExpenseChange(Number(e.target.value))} style={{ width: "100%", marginBottom: "10px", padding: "6px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#e5e7eb" }} />
 
@@ -65,7 +55,6 @@ export default function Calculator() {
         <div style={{ marginTop: "20px", padding: "12px", borderRadius: "8px", background: "#020617", border: "1px solid #1e293b", textAlign: "center" }}>
           <h2>Overall Decision Score</h2>
           <p style={{ fontSize: "32px", fontWeight: "700" }}>{score} / 10</p>
-          <p style={{ color: "#94a3b8" }}>This score reflects how balanced the decision feels across money, time and quality of life.</p>
         </div>
       </div>
     </div>
