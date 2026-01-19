@@ -1,4 +1,3 @@
-// app/page.js
 import Calculator from "./Calculator";
 
 export default function Page() {
