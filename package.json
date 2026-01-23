@@ -4,13 +4,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
     "start": "next start"
   },
   "dependencies": {
     "next": "13.4.12",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
     "next-sitemap": "^4.2.3"
   }
 }
